@@ -1,21 +1,24 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import {addTotal, idPost} from "../../../../redux/content-news-reducer";
+import {idTVContent, SummaTvInput} from "../../../../redux/content-news-reducer";
 
 
 let ContentNews = (props) => {
         let suma = React.createRef();
         let inpt = React.createRef();
 
-
-
         let idAdd = (e) => {
+            let summaTvnput = {};
+            let target = e.currentTarget.dataset.id;
+            props.dispatch(idTVContent(target));
+            summaTvnput.summa = suma.current;
+            summaTvnput.inputText = inpt.current;
+            summaTvnput.obshsum = props.summaobsh.current;
+            props.dispatch(SummaTvInput(summaTvnput))
 
-            let target = e.currentTarget;
-            let mas = {id: target.dataset.id, suma: suma.current, inptDate: inpt.current};
-            props.dispatch(idPost(mas));
-            // props.dispatch(addTotal())
+
         }
+
 
         return(
                 <div data-id={props.id} onClick={idAdd}  data-bs-toggle="modal" data-bs-target="#add-modal" >
@@ -34,7 +37,7 @@ let ContentNews = (props) => {
 								</span>
                             </div>
                             <div className="d-flex align-items-center mx">
-                                <div ref={suma} className="price-real" > 0 сом</div>
+                                <div ref={suma} className="price-real" >0 сом</div>
                             </div>
                         </div>
                     </div>

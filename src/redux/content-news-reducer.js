@@ -1,9 +1,12 @@
-let ADD_POST = "ADD-POST"
 let TEXT_SIM = "TEXT-SIMVOL"
-let POST_ID = "POST-ID";
-let SUMMA = "SUMMA"
-let SUMMA_TV = "SUMMA-TV"
-let COUNTER = 'COUNTER'
+let ID_CHANNEL = "ID-CHANNEL"
+let DATE_CHANNEL = 'DATE-CHANNEL'
+let DATE_FETCH_SUMMA = "DATE-FETCH-SUMMA"
+let SUMMA_TV_INPUT = "SUMMA-TV-INPUT";
+let INFO_USER = "INFO-USER";
+let RASMET_REKLAMA = "RASMESTY-REKLAMA"
+let mas = []
+
 let initialState = {
     ContentNews: [
         {
@@ -41,31 +44,66 @@ let initialState = {
             channelName: "СЕМЕЙНЫЙ + ДОМАШНИЙ",
             photo: "https://natv.kg/cache/files/1356.gif_w130_h65_resize.gif",
             price: 4
+        },
+        {
+            id: 7,
+            channelName: "BOORSOK TV",
+            photo: "https://natv.kg/cache/files/2662.png_w130_h65_resize.png",
+            price: 4
+        },
+        {
+            id: 8,
+            channelName: "RUSSIA TODAY DOCUMENTARY (RТDOC)",
+            photo: "https://natv.kg/cache/files/1979.jpg_w130_h65_resize.jpg",
+            price: 4
+        },
+        {
+            id: 9,
+            channelName: "АВТОГИД ГАЗЕТА",
+            photo: "https://natv.kg/cache/files/1831.jpg_w130_h65_resize.jpg",
+            price: 4
         }
 
     ],
-    tvContent: {},
+    summaTV: 0,
+    SummaTVs: 0,
     textSimvol: "",
-    dateText: [],
-    summa: [],
-    total: 0
+    idTvChannel: 0,
+    datetvChannel: [],
+    summaTvInput: {},
+    total: 0,
+    infoUser: {
+        clientEmail: "",
+        clientName: "",
+        clientPhone: ""
+    },
+    rasmetReklama: []
 }
-
-
 
 let ContentNewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case TEXT_SIM:
             state.textSimvol = action.newText
             return state;
-        case ADD_POST:
-            state.dateText = action.Newdays
+        case ID_CHANNEL:
+            state.idTvChannel = action.idChannel
             return state;
-        case POST_ID:
-            state.tvContent = action.tvCont
-            return state
-        case COUNTER:
-            state.total = 19
+        case DATE_CHANNEL:
+            state.datetvChannel = action.dateChannel
+            return state;
+        case DATE_FETCH_SUMMA:
+            state.summaWithoutDiscount = action.dateChannel
+            return state;
+        case SUMMA_TV_INPUT:
+            state.summaTvInput = action.summatvinput
+            return state;
+        case INFO_USER:
+            state.infoUser.clientPhone = action.infouser.tel;
+            state.infoUser.clientEmail = action.infouser.email;
+            state.infoUser.clientName = action.infouser.name
+            return state;
+        case RASMET_REKLAMA:
+            state.rasmetReklama = action.rasmerekl
             return state
         default: return state;
     }
@@ -75,63 +113,74 @@ export let textsimvol = (text) => {
     return {type: TEXT_SIM, newText: text}
 }
 
-export let addPostActionCreator = (date) => {
-     return {type: ADD_POST, Newdays: date};
-
+export let idTVContent = (idTV) => {
+    return {type: ID_CHANNEL, idChannel: idTV}
 }
 
-export let addTotal = (sum) => {
-    return {type: COUNTER, sum: sum};
+export let dateChannel = (dateChannel) => {
+    return{type: DATE_CHANNEL, dateChannel: dateChannel}
 }
 
-export let sumaDateAdd = () => {
-    let url = "https://na-tv.herokuapp.com/api/v1/order/get-summa";
-    let obj = {}
-    obj.channelId = initialState.tvContent.id;
-    obj.dates = initialState.dateText;
+export let resdateobjsuma = () => {
+    let obj = {};
+    let resTV = {}
+    let urlSumma = "https://na-tv.herokuapp.com/api/v1/order/get-summa";
+    obj.channelId = initialState.idTvChannel;
+    obj.dates = initialState.datetvChannel;
     obj.text = initialState.textSimvol;
-
+    resTV.channelId = initialState.idTvChannel;
+    resTV.dates = initialState.datetvChannel;
+    mas.push(resTV)
     let options = {
-        method: 'POST',
+        method: "POST",
         headers:{
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(obj)
     }
 
-    fetch(url, options)
+    fetch(urlSumma, options)
         .then(response => response.json())
-        .then(data => {
-            SummaKanal(data)
-            addTotal(data.summaWithDiscount)
-        })
+        .then(date => AddSumaChannel(date))
+
+    return{type: DATE_FETCH_SUMMA, dateChannel: 0}
+}
+
+let AddSumaChannel = (date) => {
+    initialState.summaTvInput.summa.textContent = date.summaWithoutDiscount + " сом";
+    initialState.total += date.summaWithoutDiscount;
+    initialState.summaTvInput.obshsum.textContent = ` ${initialState.total} сом`
+    initialState.summaTvInput.inputText.textContent = initialState.datetvChannel;
+}
+export let SummaTvInput = (suminput) => {
 
     return {
-        type: SUMMA
+        type: SUMMA_TV_INPUT, summatvinput: suminput
     }
 }
 
-let SummaKanal = (data) => {
-    let simTextdate = "";
-    initialState.dateText.map(item => {
-        simTextdate += ` ${item},`
-    })
-    initialState.tvContent.inptDate.textContent = simTextdate;
+export let InfoUsers = (info) => {
 
-    if (initialState.dateText.length >= 3 && data.summaWithDiscount !== 0) {
-        initialState.tvContent.suma.innerHTML = `
-            ${data.summaWithDiscount} сом <span style="color: #c20937; font-size: 14px; text-decoration: line-through;
-text-decoration-color: #c20937;">${data.summaWithoutDiscount} сом</span>`;
-    } else {
-        initialState.tvContent.suma.textContent = data.summaWithoutDiscount;
+    return {
+        type: INFO_USER, infouser: info
     }
 }
 
-export let idPost = (id) => {
+export let RasmestyReklam = () => {
+    let objChannel = {};
+    objChannel.adText = initialState.textSimvol;
+    objChannel.channels = mas;
+    objChannel.clientEmail = initialState.infoUser.clientEmail;
+    objChannel.clientName = initialState.infoUser.clientName;
+    objChannel.clientPhone = initialState.infoUser.clientPhone;
+
+
     return{
-        type: POST_ID, tvCont: id
+        type: RASMET_REKLAMA, rasmerekl: ""
     }
 }
+
+
 
 
 export default ContentNewsReducer;

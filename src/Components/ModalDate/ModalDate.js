@@ -3,7 +3,13 @@ import 'react-calendar/dist/Calendar.css';
 import DayPicker, { DateUtils } from "react-day-picker";
 import 'react-day-picker/lib/style.css';
 import ContentNews from "../Form/ChannelList/ContentNews/ContentNews";
-import {addPostActionCreator, sumaDateAdd} from "../../redux/content-news-reducer";
+import {
+    addPostActionCreator,
+    dateChannel,
+    resdateobjsuma,
+    sumaDateAdd,
+    Sumavsex
+} from "../../redux/content-news-reducer";
 
 
 class ModalDate extends React.Component {
@@ -42,9 +48,10 @@ class ModalDate extends React.Component {
             let myDateString = yy + '-' + mm + '-' + dd;
             masivDate.push(myDateString);
         })
-        let add = () => {
-            this.props.dispatch(addPostActionCreator(masivDate));
-            this.props.dispatch(sumaDateAdd());
+
+        let Add_date = () => {
+            this.props.dispatch(dateChannel(masivDate));
+            this.props.dispatch(resdateobjsuma());
         }
 
 
@@ -85,7 +92,7 @@ class ModalDate extends React.Component {
                                                data-bs-dismiss="modal"/>
                                     </div>
                                     <div>
-                                        <input onClick={add} type="button" id="ok_date"
+                                        <input onClick={Add_date} type="button" id="ok_date"
                                                className="btn bg-danger text-white" data-bs-dismiss="modal"
                                                aria-label="Close"
                                                value="Сохранить"/>

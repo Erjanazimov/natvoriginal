@@ -3,12 +3,11 @@ import ContentNews from "./ContentNews/ContentNews";
 import { withTranslation } from "react-i18next";
 
 const ChannelList = (props) => {
-    let ContentsNews = props.state.ContentNews.map(item => <ContentNews state={props.state} dispatch={props.dispatch} id={item.id}
+    let summ = React.createRef()
+    let ContentsNews = props.state.ContentNews.map(item => <ContentNews summaobsh={summ} state={props.state} dispatch={props.dispatch} id={item.id}
                                                                         price={item.price} channelName={item.channelName}
                                                                         photo={item.photo}/>)
     const { t } = props;
-
-    console.log(props)
         return (
             <div className="pd-40 channel-list-cont" >
                 <input id="idd" type="hidden" />
@@ -38,7 +37,7 @@ const ChannelList = (props) => {
                                 </div>
                                 <div className="total-block">
                                     <div className='floatR'>{t("tv5")}<span
-                                        className="fw-bold"> {props.state.total} сом</span></div>
+                                        className="fw-bold"  ref={summ}> 0  сом</span></div>
                                 </div>
                             </div>
                     </div>

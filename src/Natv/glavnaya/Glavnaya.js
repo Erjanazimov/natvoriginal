@@ -6,9 +6,13 @@ import Blocktext from "./BlockText/Blocktext";
 import ChannelList from "../../Components/Form/ChannelList/ChannelList";
 import InfoUser from "../../Components/Form/InfoUser/InfoUser";
 import { withTranslation } from "react-i18next";
-import ModalDate from "../../Components/ModalDate/ModalDate";
+
 
 const Glavnaya = (props) => {
+
+
+
+
     const { t } = props;
     let resultText;
     if(t("TextstrBan") == t("TextstrBan")){
@@ -29,7 +33,7 @@ const Glavnaya = (props) => {
                     <form className="form">
                         <Blocktext state={props.state} dispatch={props.dispatch}/>
                         <ChannelList state={props.state.ContentNews} dispatch={props.dispatch}/>
-                        <InfoUser/>
+                        <InfoUser state={props.state.ContentNews} dispatch={props.dispatch}/>
                     </form>
                     <Footer/>
                 </div>

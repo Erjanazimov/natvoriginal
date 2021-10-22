@@ -12,6 +12,8 @@ import Pravila_zapolneniya_teksta from "./Natv/Pravila_zapolneniya_teksta/Pravil
 import ModalDate from "./Components/ModalDate/ModalDate";
 
 const App = (props) => {
+
+
     return(
         <>
             <BrowserRouter>

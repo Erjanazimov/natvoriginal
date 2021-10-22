@@ -10,7 +10,6 @@ const Blocktext = (props) => {
 
         let ChetSimol = () => {
             let text = newPostElement.current.value;
-
             props.dispatch(textsimvol(text))
         }
 
