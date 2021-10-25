@@ -4,67 +4,15 @@ let DATE_CHANNEL = 'DATE-CHANNEL'
 let DATE_FETCH_SUMMA = "DATE-FETCH-SUMMA"
 let SUMMA_TV_INPUT = "SUMMA-TV-INPUT";
 let INFO_USER = "INFO-USER";
-let RASMET_REKLAMA = "RASMESTY-REKLAMA"
+let RASMET_REKLAMA = "RASMESTY-REKLAMA";
+let CONTENTS_NEWS = "CONTENTS-NEWS";
+let TOGGLE_LOADING = "TOGGLE_LOADING";
+let SUMAVSEX = "SUMA-VSEX"
+let base_url = "https://na-tv.herokuapp.com/api/v1/TvChannel/all-channels";
 let mas = []
 
 let initialState = {
-    ContentNews: [
-        {
-            id: 1,
-            channelName: "РЕН ТВ",
-            photo: "https://natv.kg/cache/files/1285.jpg_w130_h65_resize.jpg",
-            price: 4
-        },
-        {
-            id: 2,
-            channelName: "НТС",
-            photo: "https://natv.kg/cache/files/1305.jpg_w130_h65_resize.jpg",
-            price: 4
-        },
-        {
-            id: 3,
-            channelName: "КТРК",
-            photo: "https://natv.kg/cache/files/1289.jpg_w130_h65_resize.jpg",
-            price: 4
-        },
-        {
-            id: 4,
-            channelName: "ЛЮБИМЫЙ HD + CINEMAX HD",
-            photo: "https://natv.kg/cache/files/2150.jpg_w130_h65_resize.jpg",
-            price: 4
-        },
-        {
-            id: 5,
-            channelName: "ТНТ КЫРГЫЗСТАН",
-            photo: "https://natv.kg/cache/files/1363.gif_w130_h65_resize.gif",
-            price: 4
-        },
-        {
-            id: 6,
-            channelName: "СЕМЕЙНЫЙ + ДОМАШНИЙ",
-            photo: "https://natv.kg/cache/files/1356.gif_w130_h65_resize.gif",
-            price: 4
-        },
-        {
-            id: 7,
-            channelName: "BOORSOK TV",
-            photo: "https://natv.kg/cache/files/2662.png_w130_h65_resize.png",
-            price: 4
-        },
-        {
-            id: 8,
-            channelName: "RUSSIA TODAY DOCUMENTARY (RТDOC)",
-            photo: "https://natv.kg/cache/files/1979.jpg_w130_h65_resize.jpg",
-            price: 4
-        },
-        {
-            id: 9,
-            channelName: "АВТОГИД ГАЗЕТА",
-            photo: "https://natv.kg/cache/files/1831.jpg_w130_h65_resize.jpg",
-            price: 4
-        }
-
-    ],
+    ContentNews:[],
     summaTV: 0,
     SummaTVs: 0,
     textSimvol: "",
@@ -77,8 +25,13 @@ let initialState = {
         clientName: "",
         clientPhone: ""
     },
-    rasmetReklama: []
+    summavsex: 0,
+    rasmetReklama: {},
+    danyClienta: {},
+    isLoading: false,
 }
+
+
 
 let ContentNewsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -105,9 +58,30 @@ let ContentNewsReducer = (state = initialState, action) => {
         case RASMET_REKLAMA:
             state.rasmetReklama = action.rasmerekl
             return state
+        case CONTENTS_NEWS:
+            state.ContentNews = action.news
+            return state
+        case TOGGLE_LOADING:
+            state.isLoading = action.loading
+            return state
+        case SUMAVSEX:
+            state.summavsex = ""
         default: return state;
     }
 }
+
+export let contentsNews = () => {
+    return async dispatch =>{
+        dispatch({type: TOGGLE_LOADING, loading: true})
+        await fetch(base_url)
+            .then(async response =>{
+               const data = await response.json()
+                dispatch({type: CONTENTS_NEWS, news: data})
+            })
+        dispatch({type: TOGGLE_LOADING, loading: false})
+    }
+}
+
 
 export let textsimvol = (text) => {
     return {type: TEXT_SIM, newText: text}
@@ -121,6 +95,22 @@ export let dateChannel = (dateChannel) => {
     return{type: DATE_CHANNEL, dateChannel: dateChannel}
 }
 
+
+function removeDuplicates(originalArray, prop) {
+    let newArray = [];
+    let lookupObject  = {};
+
+    for(let i in originalArray) {
+        lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for(let i in lookupObject) {
+        newArray.push(lookupObject[i]);
+    }
+    return newArray;
+}
+
+
 export let resdateobjsuma = () => {
     let obj = {};
     let resTV = {}
@@ -129,7 +119,7 @@ export let resdateobjsuma = () => {
     obj.dates = initialState.datetvChannel;
     obj.text = initialState.textSimvol;
     resTV.channelId = initialState.idTvChannel;
-    resTV.dates = initialState.datetvChannel;
+    resTV.days = initialState.datetvChannel;
     mas.push(resTV)
     let options = {
         method: "POST",
@@ -147,9 +137,14 @@ export let resdateobjsuma = () => {
 }
 
 let AddSumaChannel = (date) => {
-    initialState.summaTvInput.summa.textContent = date.summaWithoutDiscount + " сом";
-    initialState.total += date.summaWithoutDiscount;
-    initialState.summaTvInput.obshsum.textContent = ` ${initialState.total} сом`
+    if (date.summaWithDiscount > 0) {
+        initialState.summaTvInput.summa.innerHTML = `${date.summaWithDiscount} сом <span class="price_old">${date.summaWithoutDiscount} сом</span>`;
+        initialState.total += date.summaWithDiscount;
+    } else {
+        initialState.summaTvInput.summa.textContent = date.summaWithoutDiscount + " сом";
+        initialState.total += date.summaWithoutDiscount;
+    }
+
     initialState.summaTvInput.inputText.textContent = initialState.datetvChannel;
 }
 export let SummaTvInput = (suminput) => {
@@ -168,17 +163,78 @@ export let InfoUsers = (info) => {
 
 export let RasmestyReklam = () => {
     let objChannel = {};
+    let url = "https://na-tv.herokuapp.com/api/v1/order/save-order";
+    let uniqueArray = removeDuplicates(mas, "channelId");
     objChannel.adText = initialState.textSimvol;
-    objChannel.channels = mas;
+    objChannel.channels = uniqueArray;
     objChannel.clientEmail = initialState.infoUser.clientEmail;
     objChannel.clientName = initialState.infoUser.clientName;
     objChannel.clientPhone = initialState.infoUser.clientPhone;
+    let options = {
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(objChannel)
+    }
 
+    fetch(url, options)
+        .then(response => {
+            if(response.ok){
+                return response.json()
+            } else {
+                alert("Зваолните правильно email")
+            }
+        })
+        .then(data => {
+            if (initialState.textSimvol === ""){
+                alert("Заполните текст вашего объявления")
+                return;
+            } else if(initialState.datetvChannel.length === 0){
+                alert("Выберите хотя бы одну дату показа");
+                return;
+            } else if(initialState.infoUser.clientPhone === ""){
+                alert('Заполните номер телефона')
+            }else if(initialState.infoUser.clientEmail === ""){
+                alert("Не заполнено E-mail")
+            }else if (initialState.infoUser.clientName === ""){
+                alert("Не заполнено ФИО")
+            }else {
+                initialState.danyClienta = data
+            }
+        })
 
     return{
         type: RASMET_REKLAMA, rasmerekl: ""
     }
 }
+
+export let summaVsehTV = () => {
+    let url = "https://na-tv.herokuapp.com/api/v1/order/save-order";
+    let objsumma = {}
+    let uniqueArray = removeDuplicates(mas, "channelId");
+    objsumma.channels = uniqueArray
+    objsumma.adText = initialState.textSimvol
+    objsumma.clientEmail = "erj.ax@gmail.com";
+
+    let options = {
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(objsumma)
+    }
+
+    fetch(url, options)
+        .then(response => response.json())
+        .then(data => {
+            initialState.summaTvInput.obshsum.textContent = ` ${data.orderCost} сом`
+        })
+    return{
+        type: SUMAVSEX
+    }
+}
+
 
 
 

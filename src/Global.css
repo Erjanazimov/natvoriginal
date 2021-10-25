@@ -126,6 +126,12 @@ button:hover{
     margin-bottom: 30px;
 }
 
+.price_old{
+    display: inline-block;
+    color: #c20937;
+    font-size: 14px;
+    text-decoration: line-through;
+}
 header .text {
     background: #fff;
     text-transform: uppercase;
@@ -289,6 +295,15 @@ label{
     margin-top: 20px;
 }
 
+
+.summad{
+    width: 800px;
+    margin-left: 40px;
+}
+
+.jik{
+    width: 100%;
+}
 .channel-list img{
     text-align: center;
     float: left;

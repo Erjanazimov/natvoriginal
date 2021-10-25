@@ -8,7 +8,7 @@ import {
     dateChannel,
     resdateobjsuma,
     sumaDateAdd,
-    Sumavsex
+    Sumavsex, summaVsehTV, SummaVsex
 } from "../../redux/content-news-reducer";
 
 
@@ -52,6 +52,9 @@ class ModalDate extends React.Component {
         let Add_date = () => {
             this.props.dispatch(dateChannel(masivDate));
             this.props.dispatch(resdateobjsuma());
+            this.props.dispatch(summaVsehTV())
+            this.state.selectedDays = [];
+
         }
 
 

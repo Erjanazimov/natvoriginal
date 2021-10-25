@@ -1,8 +1,15 @@
-import React from "react";
-import ContentNews from "./ContentNews/ContentNews";
+import React, {useEffect} from "react";
 import { withTranslation } from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+import {contentsNews} from "../../../redux/content-news-reducer";
+import ContentNews from "./ContentNews/ContentNews";
 
 const ChannelList = (props) => {
+    let dispatch = useDispatch()
+    const loader = useSelector(state=> state.ContentNews.isLoading)
+    useEffect(()=>{
+      dispatch(contentsNews())
+    },[])
     let summ = React.createRef()
     let ContentsNews = props.state.ContentNews.map(item => <ContentNews summaobsh={summ} state={props.state} dispatch={props.dispatch} id={item.id}
                                                                         price={item.price} channelName={item.channelName}
@@ -27,9 +34,10 @@ const ChannelList = (props) => {
                         </div>
                     </div>
                     <div className="content-news">
+                        {loader ? <h2>Loading...</h2>:
                         <div>
                             {ContentsNews}
-                        </div>
+                        </div>}
 
                             <div className="total">
                                 <div className="more-channel">

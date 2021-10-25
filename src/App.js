@@ -10,6 +10,7 @@ import Voprosotvet from "./Natv/Voprosotvet/Voprosotvet";
 import Oferta from "./Natv/Oferta/Oferta";
 import Pravila_zapolneniya_teksta from "./Natv/Pravila_zapolneniya_teksta/Pravila_zapolneniya_teksta";
 import ModalDate from "./Components/ModalDate/ModalDate";
+import SummaOplata1 from "./Natv/glavnaya/SummaOplata1/SummaOplata1";
 
 const App = (props) => {
 
@@ -25,7 +26,7 @@ const App = (props) => {
                 <Route path="/voprosotvet" component={Voprosotvet} exact />
                 <Route path="/oferta" component={Oferta} exact />
                 <Route path="/pravila_zapolneniya_teksta" component={Pravila_zapolneniya_teksta} exact />
-
+                <Route path="/summaoplata1" component={SummaOplata1}/>
             </BrowserRouter>
         <ModalDate/>
         </>

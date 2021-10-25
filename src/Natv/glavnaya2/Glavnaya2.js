@@ -28,7 +28,7 @@ const Glavnaya2 = (props) => {
                 <form className="form">
                     <BlockFile/>
                     <ChannelList state={props.state.ContentNews} dispatch={props.dispatch}/>
-                    <InfoUser/>
+                    <InfoUser state={props.state.ContentNews} dispatch={props.dispatch}/>
                 </form>
                 <Footer/>
             </div>

@@ -10,9 +10,6 @@ import { withTranslation } from "react-i18next";
 
 const Glavnaya = (props) => {
 
-
-
-
     const { t } = props;
     let resultText;
     if(t("TextstrBan") == t("TextstrBan")){
