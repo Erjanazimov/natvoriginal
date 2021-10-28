@@ -1,3 +1,6 @@
+import React from "react";
+import 'react-toastify/dist/ReactToastify.css';
+
 let TEXT_SIM = "TEXT-SIMVOL"
 let ID_CHANNEL = "ID-CHANNEL"
 let DATE_CHANNEL = 'DATE-CHANNEL'
@@ -7,7 +10,9 @@ let INFO_USER = "INFO-USER";
 let RASMET_REKLAMA = "RASMESTY-REKLAMA";
 let CONTENTS_NEWS = "CONTENTS-NEWS";
 let TOGGLE_LOADING = "TOGGLE_LOADING";
-let SUMAVSEX = "SUMA-VSEX"
+let SUMAVSEX = "SUMA-VSEX";
+let DANY_CLIENT = "DANY-CLIENT";
+let RESULT_SUMA = "RESULT-SUMA";
 let base_url = "https://na-tv.herokuapp.com/api/v1/TvChannel/all-channels";
 let mas = []
 
@@ -28,6 +33,9 @@ let initialState = {
     summavsex: 0,
     rasmetReklama: {},
     danyClienta: {},
+    resultSuma: {},
+    data: false,
+    perehod: false,
     isLoading: false,
 }
 
@@ -56,7 +64,14 @@ let ContentNewsReducer = (state = initialState, action) => {
             state.infoUser.clientName = action.infouser.name
             return state;
         case RASMET_REKLAMA:
-            state.rasmetReklama = action.rasmerekl
+            let objChannel = {};
+            let uniqueArray = removeDuplicates(mas, "channelId");
+            objChannel.adText = initialState.textSimvol;
+            objChannel.channels = uniqueArray;
+            objChannel.clientEmail = initialState.infoUser.clientEmail;
+            objChannel.clientName = initialState.infoUser.clientName;
+            objChannel.clientPhone = initialState.infoUser.clientPhone;
+            state.rasmetReklama = objChannel
             return state
         case CONTENTS_NEWS:
             state.ContentNews = action.news
@@ -66,6 +81,13 @@ let ContentNewsReducer = (state = initialState, action) => {
             return state
         case SUMAVSEX:
             state.summavsex = ""
+                return state
+        case DANY_CLIENT:
+            state.data = action.dany
+            return state
+        case RESULT_SUMA:
+            state.resultSuma = action.obsh
+            return state
         default: return state;
     }
 }
@@ -162,48 +184,6 @@ export let InfoUsers = (info) => {
 }
 
 export let RasmestyReklam = () => {
-    let objChannel = {};
-    let url = "https://na-tv.herokuapp.com/api/v1/order/save-order";
-    let uniqueArray = removeDuplicates(mas, "channelId");
-    objChannel.adText = initialState.textSimvol;
-    objChannel.channels = uniqueArray;
-    objChannel.clientEmail = initialState.infoUser.clientEmail;
-    objChannel.clientName = initialState.infoUser.clientName;
-    objChannel.clientPhone = initialState.infoUser.clientPhone;
-    let options = {
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(objChannel)
-    }
-
-    fetch(url, options)
-        .then(response => {
-            if(response.ok){
-                return response.json()
-            } else {
-                alert("Зваолните правильно email")
-            }
-        })
-        .then(data => {
-            if (initialState.textSimvol === ""){
-                alert("Заполните текст вашего объявления")
-                return;
-            } else if(initialState.datetvChannel.length === 0){
-                alert("Выберите хотя бы одну дату показа");
-                return;
-            } else if(initialState.infoUser.clientPhone === ""){
-                alert('Заполните номер телефона')
-            }else if(initialState.infoUser.clientEmail === ""){
-                alert("Не заполнено E-mail")
-            }else if (initialState.infoUser.clientName === ""){
-                alert("Не заполнено ФИО")
-            }else {
-                initialState.danyClienta = data
-            }
-        })
-
     return{
         type: RASMET_REKLAMA, rasmerekl: ""
     }
@@ -235,8 +215,17 @@ export let summaVsehTV = () => {
     }
 }
 
+export let danyClient = (dany) => {
+    return{
+        type:DANY_CLIENT, dany: dany
+    }
+}
 
-
+export let resultSuma = (suma) => {
+    return{
+        type: RESULT_SUMA, obsh: suma
+    }
+}
 
 
 export default ContentNewsReducer;

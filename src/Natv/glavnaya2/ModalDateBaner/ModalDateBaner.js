@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import 'react-calendar/dist/Calendar.css';
 import DayPicker, { DateUtils } from "react-day-picker";
 import 'react-day-picker/lib/style.css';
-import {dateChannel, resdateobjsuma, summaVsehTV} from "../../redux/content-news-reducer";
+import {channels_tv, dataDany, obshsuma, sumatvchannel} from "../../../redux/ContentBaner-news-reducer";
+let mas = []
 
-
-class ModalDate extends React.Component {
+class ModalDateBaner extends React.Component {
 
     constructor(props) {
         super(props);
@@ -31,6 +31,7 @@ class ModalDate extends React.Component {
     }
     render() {
         let date = this.state.selectedDays;
+
         let masivDate = [];
 
         date.map(item => {
@@ -38,22 +39,26 @@ class ModalDate extends React.Component {
             let mm = resDate.getMonth() + 1;
             let dd = resDate.getDate();
             let yy = resDate.getFullYear(); //dd-mm-yy
-            let myDateString = dd + '-' + mm + '-' + yy;
+            let myDateString = yy + '-' + mm + '-' + dd ;
             masivDate.push(myDateString);
         })
 
         let Add_date = () => {
-            this.props.dispatch(dateChannel(masivDate));
-            this.props.dispatch(resdateobjsuma());
-            this.props.dispatch(summaVsehTV())
+            this.props.dispatch(dataDany(masivDate));
+            let sumatv = this.props.state.objidprice.price_image_ad;
+            let daty = this.props.state.dataDany;
+            let result = daty.length * sumatv;
+            this.props.dispatch(sumatvchannel(result));
+            this.props.state.targ.suma.innerHTML = result + " сом";
+            this.props.state.targ.calen.innerHTML = masivDate + " сом";
+            this.props.dispatch(obshsuma(result));
             this.state.selectedDays = [];
+            this.props.dispatch(channels_tv());
         }
-
 
         return (
             <>
-                <div className="modal fade " id="add-modal" tabIndex="-1" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
+                <div className="modal fade " id="add-modal-banner" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div className="d-none">
                     </div>
                     <div className="modal-dialog">
@@ -63,18 +68,6 @@ class ModalDate extends React.Component {
                                         aria-label="Close"/>
                             </div>
                             <div className="modal-body">
-                                <div className="one_tv_modal modal-skidki">
-                                    <div className="row" id="skidka" style={{display: "block;"}}>
-                                        <div className="contyt">
-                                            При заказе на данном телеканале действует система скидок:
-                                        </div>
-                                        <div className="items">
-                                            <div className="sk_line">от 3 дн. - скидка 10%</div>
-                                            <div className="sk_line">от 7 дн. - скидка 20%</div>
-                                            <div className="sk_line">от 10 дн. - скидка 30%</div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div className="calendar">
                                     <DayPicker
                                         selectedDays={this.state.selectedDays}
@@ -103,4 +96,4 @@ class ModalDate extends React.Component {
     }
 }
 
-export default ModalDate;
+export default ModalDateBaner;

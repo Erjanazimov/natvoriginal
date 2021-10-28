@@ -15,8 +15,6 @@ let ContentNews = (props) => {
             summaTvnput.inputText = inpt.current;
             summaTvnput.obshsum = props.summaobsh.current;
             props.dispatch(SummaTvInput(summaTvnput))
-
-
         }
 
 

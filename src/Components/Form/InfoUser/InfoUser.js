@@ -1,12 +1,15 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import {InfoUsers, RasmestyReklam} from "../../../redux/content-news-reducer";
+import {danyClient, InfoUsers, RasmestyReklam, resultSuma} from "../../../redux/content-news-reducer";
+import {NavLink} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const InfoUser = (props) =>{
     const { t } = props;
     let tel = React.createRef();
     let email = React.createRef();
     let NameFam = React.createRef();
+
     let info = () => {
         let obj = {}
         obj.tel = tel.current.value;
@@ -17,6 +20,35 @@ const InfoUser = (props) =>{
 
     let RaxmestReklam = () => {
         props.dispatch(RasmestyReklam())
+        let options = {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(props.state.rasmetReklama)
+        }
+        fetch("https://na-tv.herokuapp.com/api/v1/order/save-order", options)
+            .then(response => response.json())
+            .then(data => {
+                if (props.state.textSimvol === "") {
+                    toast.error("Заполните текст вашего объявления");
+                } else if (props.state.datetvChannel.length == 0){
+                    toast.error("Выберите хотя бы одну дату показа");
+                }  else if(props.state.infoUser.clientPhone === "") {
+                    toast.error('Заполните номер телефона');
+                }else if(data.status === 500){
+                    toast.error("Заполните правильно e-mail");
+                } else if(props.state.infoUser.clientName === ""){
+                    toast.error("Не заполнено ФИО")
+                } else {
+                    showData(data)
+                }}
+            )
+    }
+
+    let showData = (data) => {
+        props.dispatch(resultSuma(data));
+       props.dispatch(danyClient(true));
     }
 
     return(
@@ -34,8 +66,10 @@ const InfoUser = (props) =>{
                                id="name" placeholder={t("userplac2")} value={props.state.infoUser.clientEmail}/></div>
                     <div className="mbm">
                         <label>{t("user3")}</label>
+
                         <input type="text" ref={NameFam} onChange={info} name="middle" className="form-control rounded input-ntv"
-                               id="middle" placeholder={t("userplac3")} value={props.state.infoUser.clientName}/></div>
+                               id="middle" placeholder={t("userplac3")} value={props.state.infoUser.clientName}/>
+                    </div>
                 </div>
                 <div>
                     <p>
@@ -49,9 +83,12 @@ const InfoUser = (props) =>{
                     <div className="check-text">
                         <div>{t("userraz")}</div>
                     </div>
-                    <div className="div-btn mt-3">
+
+                    <div className= "div-btn mt-3">
+                        <NavLink to={props.state.data ? "/summaoplata1" : {}} >
                         <input onClick={RaxmestReklam} type="button" name="" value={t("userBtn")}
                                className="btn-ntv"/>
+                        </NavLink>
                     </div>
                 </div>
 

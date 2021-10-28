@@ -1,6 +1,6 @@
 import React from "react";
 
-let Rekvisity = (props) => {
+let Rekvisity2 = (props) => {
     return(
         <>
             <div className="col-lg-8 col-md-7">
@@ -8,6 +8,16 @@ let Rekvisity = (props) => {
                     записать код оплаты, сумму к оплате, срок до которого необходимо оплатить и внести оплату любым
                     удобным для Вас способом.</p>
                 <hr/>
+                <div className="row ">
+                    <div className="col-sm-6">
+                        <h4>код оплаты</h4>
+                        <p className="hint"><span>Введите этот номер в терминале:<b>Terem Pay, Quickpay, О!Деньги, Balance.kg, QIWI, Кыргыз Почтасы, Элсом, Optima Bank, Optima24, UMAI, Мобильник</b></span>
+                        </p>
+                    </div>
+                    <div className="col-sm-6">
+                        <div className="code">{props.state.newsTvContent.rasmets.payment_code}</div>
+                    </div>
+                </div>
                 <div className="order-one-row">
                     <div className="row">
                         <div className="col-sm-6">
@@ -29,7 +39,7 @@ let Rekvisity = (props) => {
                                 если сумма к оплате будет меньше, заявка не будет размещена.</p>
                         </div>
                         <div className="col-sm-6">
-                            <div className="sum">{props.state.ContentNews.resultSuma.orderCost} сом</div>
+                            <div className="sum">{props.state.newsTvContent.rasmets.price} сом</div>
                         </div>
                     </div>
                 </div>
@@ -37,11 +47,10 @@ let Rekvisity = (props) => {
                 <div className="order-one-row">
                     <div className="row">
                         <div className="col-sm-6">
-                            <h4>текст объявления</h4>
-                            <p className="hint"><span>Символов:</span> {props.state.ContentNews.textSimvol.replace(/\s/g, '').length}</p>
+                            <h4>загруженное изображение</h4>
                         </div>
                         <div className="col-sm-6">
-                            <div className="mes">{props.state.ContentNews.textSimvol}</div>
+                            <div className="mes "><img className="banner" src={props.state.newsTvContent.rasmets.image}/></div>
                         </div>
                     </div>
                 </div>
@@ -54,9 +63,11 @@ let Rekvisity = (props) => {
                         <div className="col-sm-6">
                             <ul className="ch-list list-unstyled">
                                 <li>
-                                    <div>{props.state.ContentNews.resultSuma.channels.map(item => {
-                                        return <p> <span className="title"> {` ${item.channelName} `} </span> <br/> <span className="date"> {` ${item.dates} `} </span>  </p>
-                                    })}</div>
+                                    <div>
+                                        {props.state.newsTvContent.channels.map(item => {
+                                            return <p> <span className="title"> {` ${item.name} `} </span> <br/> <span className="date"> {` ${item.dates} `} </span>  </p>
+                                        })}
+                                    </div>
                                 </li>
 
                             </ul>
@@ -84,4 +95,4 @@ let Rekvisity = (props) => {
     )
 }
 
-export default Rekvisity;
+export default Rekvisity2;

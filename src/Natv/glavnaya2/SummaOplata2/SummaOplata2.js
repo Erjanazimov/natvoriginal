@@ -2,9 +2,9 @@ import React from "react";
 import {NavLink} from "react-router-dom";
 import Header from "../../../Components/Header/Header";
 import { withTranslation } from "react-i18next";
-import Rekvisity from "./Rekvisity";
+import Rekvisity2 from "./Rekvisity2";
 
-let SummaOplata1 = (props) => {
+let SummaOplata2 = (props) => {
     const { t } = props;
     let resultText;
     if(t("TextstrBan") == t("TextstrBan")){
@@ -17,8 +17,8 @@ let SummaOplata1 = (props) => {
             <div className="wrapper">
                 <div className="container-natv content-natv">
                     <nav className="topMenu d-flex justify-content-around">
-                        <a href="/" className="active">{t("navstr")}</a>
-                        <a href="/glavnaya2" className="active-2">{t("navbar")} </a >
+                        <a href="/" className="active-2">{t("navstr")}</a>
+                        <a href="/glavnaya2" className="active">{t("navbar")} </a >
                     </nav>
                     <Header TextBanner={resultText}/>
                     <div className="pd-40 bg-white order">
@@ -30,7 +30,7 @@ let SummaOplata1 = (props) => {
                                 записать код оплаты, сумму к оплате, срок до которого необходимо оплатить и
                                 внести оплату любым удобным для Вас способом.</p>
                             <hr/>
-                            <Rekvisity dispatch={props.dispatch} state={props.state}/>
+                            <Rekvisity2 dispatch={props.dispatch} state={props.state}/>
                         </div>
                         <div className="summad">
                             <div><h3>Уважаемый Рекламодатель</h3>
@@ -60,4 +60,4 @@ let SummaOplata1 = (props) => {
 )
 }
 
-export default withTranslation() (SummaOplata1)
+export default withTranslation() (SummaOplata2)

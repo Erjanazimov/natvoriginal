@@ -5,7 +5,7 @@ body{
     font-size: 14px;
 }
 
-h1,h2,h3,h4,h5,h6{
+h1,h2,h3,h5,h6{
     color: #c20937;
 }
 
@@ -19,6 +19,10 @@ h1, h2 {
 h3{
     margin-top: 0;
     font-size: 18px;
+}
+
+h4{
+    color: black;
 }
 
 a{
@@ -108,7 +112,33 @@ button:hover{
 .textsum{
     color: red;
 }
+.sum{
+    font-size: 24px;
+    color: #c20937;
+}
 
+.hint{
+    line-height: 1.2em;
+    font-size: 12px;
+    color: #808084;
+}
+
+.mes{
+    color: #c20937;
+    font-size: 18px;
+    word-wrap: break-word;
+}
+
+.title{
+    margin-bottom: 3px;
+    color: #c20937;
+    font-size: 18px;
+}
+
+.date{
+    font-size: 12px;
+    color: #808084;
+}
 .langs button{
     text-transform: uppercase;
     padding: 5px 15px;
@@ -294,11 +324,35 @@ label{
 .mbm{
     margin-top: 20px;
 }
-
-
+.code{
+    font-size: 24px;
+    color: #fff;
+    background: #c20937;
+    padding: 0 15px;
+    line-height: 36px;
+    display: inline-block;
+    height: 40px;
+}
 .summad{
     width: 800px;
     margin-left: 40px;
+}
+
+.Imgload{
+    width: 280px;
+    height: 225px;
+}
+
+.paybox-submit{
+    background: #c20937 !important;
+    border-radius: 0;
+    border: 0;
+    display: block;
+    padding: 20px 100px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    font-size: 16px;
+    white-space: normal;
 }
 
 .jik{
@@ -315,6 +369,11 @@ label{
     width: 132px;
     height: 67px;
     line-height: 67px;
+}
+
+.banner{
+    width: 188px;
+    height: 150px;
 }
 
 .show-dates{

@@ -1,9 +1,22 @@
 import React from "react";
 import LogoPayment from "../../../Components/Form/LogoPayment/LogoPayment";
 import { withTranslation } from "react-i18next";
+import {imgLoadLink} from "../../../redux/ContentBaner-news-reducer";
+import ModalDateBaner from "../ModalDateBaner/ModalDateBaner";
 
 const BlockFile = (props) => {
     const { t } = props;
+    let loadimg = React.createRef();
+    let predpros = React.createRef();
+    let imgbl = React.createRef();
+    let load = () => {
+        let textLinkImg = loadimg.current;
+        props.dispatch(imgLoadLink(textLinkImg.value));
+        predpros.current.classList.add("d-none")
+        imgbl.current.classList.add("d-block");
+        imgbl.current.classList.remove("d-none")
+    }
+
     return(
         <>
             <div className="pd-40 mn">
@@ -17,15 +30,16 @@ const BlockFile = (props) => {
                         </div>
                     </div>
                     <p className="mt-3 input-group">
-                        <input className="form-control" type="file" id="formFile"/>
-                        <button className="btn mx-2 img-btn">{t("textZapBaner3")}</button>
+                        <input ref={loadimg} className="form-control" type="text" id="formFile"/>
+                        <button onClick={load} type="button" className="btn mx-2 img-btn">{t("textZapBaner3")}</button>
                     </p>
                     <p className="rek mt-4">
                         {t("uploadBanner")}
                     </p>
                     <div className="d-flex align-items-center">
                         <div className="preview" id="preview_cont">
-                            <span className="text">Предпросмотр</span>
+                            <img ref={imgbl} className="Imgload d-none" src={props.state.load_img} />
+                            <span ref={predpros} className="text">Предпросмотр</span>
                         </div>
                         <div className="red-text">
                             {t("uploadBanner2")}
@@ -71,6 +85,7 @@ const BlockFile = (props) => {
                     </div>
                 </div>
             </div>
+            <ModalDateBaner state={props.state}  dispatch={props.dispatch}/>
             </>
     )
 }

@@ -1,15 +1,16 @@
 import React from "react";
 import Header from "../../Components/Header/Header";
 import {NavLink} from "react-router-dom";
-import ChannelList from "../../Components/Form/ChannelList/ChannelList";
 import InfoUser from "../../Components/Form/InfoUser/InfoUser";
 import BlockFile from "./BlockFile/BlockFile";
 import Footer from "../../Components/Footer/Footer";
 import { withTranslation } from "react-i18next";
+import ChannelTV from "./Channeltv/ChannelTV";
+import ModalDateBaner from "./ModalDateBaner/ModalDateBaner";
+import InfoUserBanner2 from "./InfoUserBanner2/InfoUserBanner2";
 
 const Glavnaya2 = (props) => {
     const { t } = props;
-
     let resultText;
     if(t("TextbanerB") == t("TextbanerB")){
         resultText = t("TextbanerB");
@@ -26,9 +27,9 @@ const Glavnaya2 = (props) => {
                 </nav>
         <Header TextBanner={t("TextbanerB")}/>
                 <form className="form">
-                    <BlockFile/>
-                    <ChannelList state={props.state.ContentNews} dispatch={props.dispatch}/>
-                    <InfoUser state={props.state.ContentNews} dispatch={props.dispatch}/>
+                    <BlockFile state={props.state.newsTvContent} dispatch={props.dispatch}/>
+                    <ChannelTV state={props.state.newsTvContent} dispatch={props.dispatch}/>
+                    <InfoUserBanner2 state={props.state.newsTvContent} dispatch={props.dispatch}/>
                 </form>
                 <Footer/>
             </div>
