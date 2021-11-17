@@ -31,15 +31,15 @@ const InfoUser = (props) =>{
             .then(response => response.json())
             .then(data => {
                 if (props.state.textSimvol === "") {
-                    toast.error("Заполните текст вашего объявления");
-                } else if (props.state.datetvChannel.length == 0){
-                    toast.error("Выберите хотя бы одну дату показа");
+                   alert("Заполните текст вашего объявления");
+                } else if (props.state.datetvChannel.length === 0){
+                    alert("Выберите хотя бы одну дату показа");
                 }  else if(props.state.infoUser.clientPhone === "") {
-                    toast.error('Заполните номер телефона');
+                    alert('Заполните номер телефона');
                 }else if(data.status === 500){
-                    toast.error("Заполните правильно e-mail");
+                    alert("Заполните правильно e-mail");
                 } else if(props.state.infoUser.clientName === ""){
-                    toast.error("Не заполнено ФИО")
+                    alert("Не заполнено ФИО")
                 } else {
                     showData(data)
                 }}

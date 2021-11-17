@@ -73,7 +73,7 @@ let Rekvisity = (props) => {
                                 гарантировано. В случае неоплаты ваша заявка не будет выполнена.</p>
                         </div>
                         <div className="col-sm-6">
-                            <div className="mes">30 октября 2021 г.</div>
+                            <div className="mes">12 ноября 2021 г.</div>
                         </div>
                     </div>
                 </div>

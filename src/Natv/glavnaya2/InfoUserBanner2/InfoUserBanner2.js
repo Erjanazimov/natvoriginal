@@ -23,15 +23,15 @@ const InfoUserBanner2 = (props) =>{
         userData.channels = props.state.channels
 
         if (userData.image === ""){
-            toast.error("Загрузите изображение")
+           alert("Загрузите изображение")
         } else if (props.state.dataDany.length === 0){
-            toast.error("Выберите хотя бы одну дату показа");
+           alert("Выберите хотя бы одну дату показа");
         } else if (userData.phone_number === ""){
-            toast.error('Заполните номер телефона');
+            alert('Заполните номер телефона');
         } else if (userData.email === ""){
-            toast.error("Заполните правильно e-mail");
+            alert("Заполните правильно e-mail");
         } else if (userData.name === ""){
-            toast.error("Не заполнено ФИО")
+            alert("Не заполнено ФИО")
         } else {
             let options = {
                 method: "POST",
